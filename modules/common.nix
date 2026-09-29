@@ -1,13 +1,22 @@
-{ pkgs, ... }: {
+# Everything that applies to every machine in the repo.
+{
   networking.networkmanager.enable = true;
+
   time.timeZone = "Europe/Brussels";
   i18n.defaultLocale = "en_US.UTF-8";
-  nixpkgs.config.allowUnfree = true;
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
-  users.users.miningpinguin = {
-    isNormalUser = true;
-    description = "MiningPinguin";
-    extraGroups = [ "networkmanager" "wheel" ];
+  # Needed for Discord, Spotify, Steam, Google Chrome, ...
+  nixpkgs.config.allowUnfree = true;
+
+  nix.settings = {
+    experimental-features = [ "nix-command" "flakes" ];
+    # Flakes refuse to build for users that are not trusted.
+    trusted-users = [ "root" "wheel" ];
   };
+
+  security.sudo.wheelNeedsPassword = true;
+  users.mutableUsers = true;
+
+  # Compressed swap in RAM, courtesy of the zram-generator service.
+  zramSwap.enable = true;
 }

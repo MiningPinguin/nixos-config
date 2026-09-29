@@ -1,21 +1,61 @@
-{ pkgs, ... }: {
-  # system side
+# Development workstation bits: containers, databases, toolchains.
+# Used by d-mk1 and l-mk1.
+{ lib, pkgs, ... }:
+let
+  user = "miningpinguin";
+in
+{
+  # Containers
   virtualisation.docker.enable = true;
-  users.users.miningpinguin.extraGroups = [ "docker" ];
-  environment.systemPackages = [ pkgs.docker-compose ];
+  # mkAfter so this appends to the groups from modules/user.nix instead of
+  # replacing them.
+  users.users.${user}.extraGroups = lib.mkAfter [ "docker" ];
 
-  # user side (Home Manager)
-  home-manager.users.miningpinguin = {
-    programs.git = {
-      enable = true;
-      settings.user = { name = "YourName"; email = "you@example.com"; };
-    };
-    programs.vscode = { enable = true; package = pkgs.vscodium; };
-    home.packages = with pkgs; [
-      cmake ninja maven jdk nodejs
-      godot kicad
-      android-studio jetbrains-toolbox
-      opencode llama-cpp-vulkan mutt
+  # Databases
+  services.postgresql.enable = true;
+
+  # Remote access, so the servers are reachable by name
+  services.tailscale.enable = true;
+
+  # Toolchains. `npm` and friends come bundled with nodejs.
+  environment.systemPackages = with pkgs; [
+    docker-compose
+    cmake
+    jdk
+    maven
+    ninja
+    nodejs
+    mutt
+    opencode
+
+    # SDK headers, for building against Vulkan and SPIR-V
+    vulkan-headers
+    spirv-headers
+
+    # Qt 5 modules, still needed by parts of the toolchain
+    qt5.qtdeclarative
+    qt5.qtwebchannel
+    qt5.qtwebsockets
+
+    # Build helper for KDE software
+    kdePackages.extra-cmake-modules
+  ];
+
+  # Bigger applications live in the user profile.
+  home-manager.users.${user}.home.packages = with pkgs; [
+    android-studio
+    godot
+    jetbrains-toolbox
+    kicad
+    llama-cpp-vulkan
+  ];
+
+  # Scratch environment for throwaway Python work:
+  #   nix develop
+  devShells.default = pkgs.mkShell {
+    packages = with pkgs; [
+      python3
+      python3Packages.websockets
     ];
   };
 }
