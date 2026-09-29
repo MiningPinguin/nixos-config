@@ -113,4 +113,10 @@
   home-manager.useGlobalPkgs = true;
   home-manager.useUserPackages = true;
   home-manager.users.miningpinguin = import ../../home/dev.nix;
+
+  home-manager.users.miningpinguin = {
+  home.username = "miningpinguin";
+  home.homeDirectory = "/home/miningpinguin";
+  home.stateVersion = "26.05";
+};
 }
