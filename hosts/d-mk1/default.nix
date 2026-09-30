@@ -22,7 +22,7 @@
     efiSupport = true;
     device = "nodev";
     useOSProber = false;
-    configurationLimit = 10;
+    configurationLimit = 6;
 
     extraEntries = ''
       menuentry "Arch Linux" {
@@ -31,6 +31,16 @@
         initrd /amd-ucode.img /initramfs-linux.img
       }
     '';
+  };
+
+  # Shorter names in the GRUB generation submenu
+  system.nixos.label = "26.05";
+
+  # Weekly cleanup of old generations and unused store paths
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 14d";
   };
 
   # Newest stable kernel
