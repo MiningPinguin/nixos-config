@@ -27,10 +27,5 @@ in
         email = "Arthur+Github@ruymen.com";
       };
     };
-
-    programs.vscodium = {
-      enable = true;
-      profiles.default.userSettings."git.autofetch" = true;
-    };
   };
 }

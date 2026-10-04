@@ -41,12 +41,18 @@ in
     kdePackages.extra-cmake-modules
   ];
 
-  # Bigger applications live in the user profile.
-  home-manager.users.${user}.home.packages = with pkgs; [
-    android-studio
-    godot
-    jetbrains-toolbox
-    kicad
-    llama-cpp-vulkan
-  ];
+  home-manager.users.${user} = {
+    home.packages = with pkgs; [
+      android-studio
+      godot
+      jetbrains-toolbox
+      kicad
+      llama-cpp-vulkan
+    ];
+
+    programs.vscodium = {
+      enable = true;
+      profiles.default.userSettings."git.autofetch" = true;
+    };
+  };
 }
