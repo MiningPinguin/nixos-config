@@ -1,4 +1,4 @@
-# d-mk1: desktop with a plasma session, used for development and gaming.
+# d-mk4: desktop with a plasma session, used for development and gaming.
 { lib, pkgs, ... }:
 {
   imports = [

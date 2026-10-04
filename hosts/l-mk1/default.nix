@@ -1,4 +1,4 @@
-# l-mk1: laptop, same Plasma desktop and development setup as d-mk1 minus
+# l-mk1: laptop, same Plasma desktop and development setup as d-mk4 minus
 # the gaming bits.
 { lib, ... }:
 {

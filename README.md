@@ -1,16 +1,16 @@
 # Nixos-Config
 
-- D-Mk1
+- D-Mk4
 - L-Mk1
 - S-Mk1
 - S2-Mk1
 
 A lot of things will be shared between 
-- d-mk1 and l-mk1
+- d-mk4 and l-mk1
 - s-mk1 and s2-mk1
 
-## D-Mk1
-- d-mk1 (desktop)
+## D-Mk4
+- d-mk4 (desktop)
 
 - Developing
 - Gaming

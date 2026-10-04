@@ -1,5 +1,5 @@
 # Development workstation bits: containers, databases, toolchains.
-# Used by d-mk1 and l-mk1.
+# Used by d-mk4 and l-mk1.
 { lib, pkgs, ... }:
 let
   user = "miningpinguin";

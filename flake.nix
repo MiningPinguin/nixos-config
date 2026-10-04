@@ -35,7 +35,7 @@
     # A host picks its own modules from its own directory, so adding one-off
     # tweaks here is only needed for things that must apply everywhere.
     nixosConfigurations = {
-      d-mk1 = mkHost "d-mk1" [ ];
+      d-mk4 = mkHost "d-mk4" [ ];
       l-mk1 = mkHost "l-mk1" [ ];
       s-mk1 = mkHost "s-mk1" [ ];
       s2-mk1 = mkHost "s2-mk1" [ ];

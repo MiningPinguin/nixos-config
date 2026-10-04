@@ -1,8 +1,8 @@
 Legend: `x` = in a nix file, `d` = can't be done on NixOS, `s` = skipped on purpose,
 `/` = unsure. Checked against nixpkgs rev `7fc6f2c2` (nixos-26.05) from flake.lock.
 
-Modules: `common` (all) · `user` (all) · `tools` (all) · `dev` (d-mk1, l-mk1) ·
-`gaming` (d-mk1) · `desktop` (d-mk1, l-mk1) · `servers/*` (s-mk1, s2-mk1).
+Modules: `common` (all) · `user` (all) · `tools` (all) · `dev` (d-mk4, l-mk1) ·
+`gaming` (d-mk4) · `desktop` (d-mk4, l-mk1) · `servers/*` (s-mk1, s2-mk1).
 
 #### AUR
 - [d] amethyst-mod-manager — not in nixpkgs
@@ -60,9 +60,9 @@ Modules: `common` (all) · `user` (all) · `tools` (all) · `dev` (d-mk1, l-mk1)
 - [x] kwin-x11 — shipped by the Plasma 6 module
 - [x] less — `tools`
 - [x] libpulse — `services.pipewire.pulse.enable` in `desktop`
-- [x] linux — `boot.kernelPackages = pkgs.linuxPackages_latest` in `hosts/d-mk1`
+- [x] linux — `boot.kernelPackages = pkgs.linuxPackages_latest` in `hosts/d-mk4`
 - [x] linux-firmware — comes with the kernel packages
-- [s] linux-lts — d-mk1 tracks the newest kernel; switch with `boot.kernelPackages`
+- [s] linux-lts — d-mk4 tracks the newest kernel; switch with `boot.kernelPackages`
 - [/] linux-lts-headers — no per-kernel headers package; NixOS builds modules against nixpkgs kernels
 - [x] maven — `dev`
 - [x] mtools — `tools`

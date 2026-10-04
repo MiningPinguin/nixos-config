@@ -1,5 +1,5 @@
 # The graphical desktop: X11, Plasma 6, audio and the applications that go
-# with it. Used by d-mk1 and l-mk1.
+# with it. Used by d-mk4 and l-mk1.
 { pkgs, ... }:
 let
   user = "miningpinguin";
