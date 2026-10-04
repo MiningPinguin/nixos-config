@@ -1,5 +1,5 @@
-# The interactive user and the Home Manager bits that go with them.
-{ pkgs, ... }:
+# The interactive user and their Home Manager account.
+# The programs they use live in the modules grouped by type.
 let
   user = "miningpinguin";
 in
@@ -19,13 +19,5 @@ in
     home.username = user;
     home.homeDirectory = "/home/${user}";
     home.stateVersion = "26.05";
-
-    programs.git = {
-      enable = true;
-      settings.user = {
-        name = "MiningPinguin";
-        email = "Arthur+Github@ruymen.com";
-      };
-    };
   };
 }

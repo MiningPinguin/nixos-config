@@ -1,5 +1,8 @@
 # Small command line tools that are handy on any machine, desktop or server.
 { pkgs, ... }:
+let
+  user = "miningpinguin";
+in
 {
   environment.systemPackages = with pkgs; [
     # Reading and editing
@@ -31,4 +34,13 @@
 
     xdg-utils
   ];
+
+  # Git, with the identity used for commits
+  home-manager.users.${user}.programs.git = {
+    enable = true;
+    settings.user = {
+      name = "MiningPinguin";
+      email = "Arthur+Github@ruymen.com";
+    };
+  };
 }
