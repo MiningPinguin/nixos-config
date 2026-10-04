@@ -1,24 +1,39 @@
-# Nixos-Config
+# nixos-config
 
-- D-Mk4
-- L-Mk1
-- S-Mk1
-- S2-Mk1
+Flake-based NixOS configuration for my machines.
 
-A lot of things will be shared between 
-- d-mk4 and l-mk1
-- s-mk1 and s2-mk1
+| Host   | Role           | Modules                                          |
+|--------|----------------|--------------------------------------------------|
+| d-mk4  | desktop        | common, user, tools, dev, desktop, gaming, plasma, theme |
+| l-mk1  | laptop         | common, user, tools, dev, desktop                |
+| s-mk1  | file server    | common, user, tools, servers/base, servers/fileserver |
+| s2-mk1 | network server | common, user, tools, servers/base, servers/network |
 
-## D-Mk4
-- d-mk4 (desktop)
+## Layout
 
-- Developing
-- Gaming
-## L-Mk1
-- l-mk1 (laptop)
+- `flake.nix` defines the inputs, the username, and one output per host.
+- `hosts/<name>/` holds what is specific to one machine: its module list,
+  hardware configuration and boot setup.
+- `modules/` is grouped by type, not by program. A module holds the NixOS and
+  Home Manager settings for its topic together.
+- `modules/theme/` is the only place that decides how things look. Each file
+  there is a complete backend (currently `catppuccin.nix`), so switching theme
+  system means swapping one import in the host.
 
-- Developing
-## S-Mk1
-- s-mk1 (file server)
-## S2-Mk1
-- s2-mk1 (network server)
+## Rules
+
+- A setting is defined once. The username lives in `flake.nix`; the theme
+  flavor and accent live in `modules/theme/catppuccin.nix`.
+- `user.nix` configures the account only. Programs live in the module for
+  their topic.
+- Looks live in `modules/theme/`, behavior lives in the module for the topic
+  (for example `modules/plasma.nix`).
+
+## Rebuilding
+
+```
+sudo nixos-rebuild switch --flake .#<host>
+```
+
+Use `boot` instead of `switch` for changes to the bootloader or hostname.
+New files must be staged with `git add` before a flake build can see them.
