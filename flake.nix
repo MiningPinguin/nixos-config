@@ -23,25 +23,22 @@
 
     # Every machine in this repo is x86_64-linux for now. If that ever changes,
     # move the platform into the host directory instead.
-    mkHost = name: extraModules: nixpkgs.lib.nixosSystem {
+    mkHost = name: nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       specialArgs = { inherit inputs user; };
       modules = [
         ./hosts/${name}
         home-manager.nixosModules.home-manager
-        {
-          networking.hostName = name;
-        }
-      ] ++ extraModules;
+        { networking.hostName = name; }
+      ];
     };
   in {
-    # A host picks its own modules from its own directory, so adding one-off
-    # tweaks here is only needed for things that must apply everywhere.
+    # A host picks its modules from its own directory (hosts/<name>/default.nix).
     nixosConfigurations = {
-      d-mk4 = mkHost "d-mk4" [ ];
-      l-mk1 = mkHost "l-mk1" [ ];
-      s-mk1 = mkHost "s-mk1" [ ];
-      s2-mk1 = mkHost "s2-mk1" [ ];
+      d-mk4 = mkHost "d-mk4";
+      l-mk1 = mkHost "l-mk1";
+      s-mk1 = mkHost "s-mk1";
+      s2-mk1 = mkHost "s2-mk1";
     };
   };
 }
