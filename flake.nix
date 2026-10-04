@@ -18,11 +18,14 @@
 
   outputs = { nixpkgs, home-manager, ... }@inputs:
   let
+    # The one interactive user on every machine.
+    user = "miningpinguin";
+
     # Every machine in this repo is x86_64-linux for now. If that ever changes,
     # move the platform into the host directory instead.
     mkHost = name: extraModules: nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
-      specialArgs = { inherit inputs; };
+      specialArgs = { inherit inputs user; };
       modules = [
         ./hosts/${name}
         home-manager.nixosModules.home-manager

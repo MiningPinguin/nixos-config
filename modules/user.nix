@@ -1,8 +1,6 @@
 # The interactive user and their Home Manager account.
 # The programs they use live in the modules grouped by type.
-let
-  user = "miningpinguin";
-in
+{ user, ... }:
 {
   users.users.${user} = {
     isNormalUser = true;

@@ -2,10 +2,7 @@
 # To switch theme backend later (e.g. Stylix), replace this file's import in
 # the host with a different module from this folder.
 # Note: the Plasma part needs modules/plasma.nix (plasma-manager) imported too.
-{ inputs, lib, pkgs, ... }:
-let
-  user = "miningpinguin";
-
+{ inputs, lib, pkgs, user, ... }:let
   # Change the look here (flavors: latte, frappe, macchiato, mocha)
   flavor = "mocha";
   accent = "mauve";

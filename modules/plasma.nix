@@ -1,9 +1,6 @@
 # KDE Plasma configured through plasma-manager.
 # Looks (colors, icons, cursor) are set in modules/theme/, behavior is set here.
-{ inputs, ... }:
-let
-  user = "miningpinguin";
-in
+{ inputs, user, ... }:
 {
   home-manager.sharedModules = [ inputs.plasma-manager.homeModules.plasma-manager ];
 

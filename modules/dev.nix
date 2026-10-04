@@ -1,9 +1,6 @@
 # Development workstation bits: containers, databases, toolchains.
 # Used by d-mk4 and l-mk1.
-{ lib, pkgs, ... }:
-let
-  user = "miningpinguin";
-in
+{ lib, pkgs, user, ... }:
 {
   # Containers
   virtualisation.docker.enable = true;

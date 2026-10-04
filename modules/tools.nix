@@ -1,8 +1,5 @@
 # Small command line tools that are handy on any machine, desktop or server.
-{ pkgs, ... }:
-let
-  user = "miningpinguin";
-in
+{ pkgs, user, ... }:
 {
   environment.systemPackages = with pkgs; [
     # Reading and editing
