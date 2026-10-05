@@ -27,7 +27,7 @@
     configurationLimit = 6;
 
     extraEntries = ''
-      menuentry "Arch Linux" {
+      menuentry "Arch Linux" --class arch --class gnu-linux --class os {
         search --no-floppy --fs-uuid --set=root 678F-2BFB
         linux /vmlinuz-linux root=PARTUUID=03a56500-4cad-4faf-b861-0727992e5397 zswap.enabled=0 rw rootfstype=ext4
         initrd /amd-ucode.img /initramfs-linux.img
