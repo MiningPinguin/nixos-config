@@ -61,8 +61,8 @@ in
     gvfs
     remmina
     yad
-    gst-libav
-    gst-plugins-good
+    #gst-libav
+    #gst-plugins-good
 
     # CJK fonts
     noto-fonts-cjk-sans
