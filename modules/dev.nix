@@ -49,13 +49,4 @@ in
     kicad
     llama-cpp-vulkan
   ];
-
-  # Scratch environment for throwaway Python work:
-  #   nix develop
-  devShells.default = pkgs.mkShell {
-    packages = with pkgs; [
-      python3
-      python3Packages.websockets
-    ];
-  };
 }
