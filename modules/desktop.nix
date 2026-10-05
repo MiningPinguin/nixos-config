@@ -16,11 +16,8 @@ in
   # breeze and friends, so none of those need to be listed again here.
   services.desktopManager.plasma6.enable = true;
 
-  # Splash screen. "breeze" resolves to nixpkgs' breeze-plymouth variant.
-  boot.plymouth = {
-    enable = true;
-    theme = "breeze";
-  };
+  # Splash screen. The theme is set in modules/theme/.
+  boot.plymouth.enable = true;
 
   programs.firefox.enable = true;
 
