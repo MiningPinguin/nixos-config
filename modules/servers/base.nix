@@ -7,6 +7,4 @@
   };
 
   # zramSwap itself comes from modules/common.nix.
-
-  services.tailscale.enable = true;
 }

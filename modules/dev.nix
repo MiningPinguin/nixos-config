@@ -14,9 +14,6 @@ in
   # Databases
   services.postgresql.enable = true;
 
-  # Remote access, so the servers are reachable by name
-  services.tailscale.enable = true;
-
   # Toolchains. `npm` and friends come bundled with nodejs.
   environment.systemPackages = with pkgs; [
     docker-compose
