@@ -8,6 +8,8 @@
     ../../modules/dev.nix
     ../../modules/desktop.nix
     ../../modules/gaming.nix
+    ../../modules/plasma.nix
+    ../../modules/theme/catppuccin.nix
   ]
   # The installer drops hardware-configuration.nix in here.
   ++ lib.optional (builtins.pathExists ./hardware-configuration.nix) ./hardware-configuration.nix;
