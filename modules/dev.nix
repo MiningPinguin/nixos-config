@@ -19,6 +19,7 @@
     maven
     ninja
     nodejs
+    pnpm
     mutt
     opencode
 
