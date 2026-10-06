@@ -13,7 +13,7 @@ Flake-based NixOS configuration for my machines.
 
 - `flake.nix` defines the inputs, the username, and one output per host.
 - `hosts/<name>/` holds what is specific to one machine: its module list,
-  hardware configuration and boot setup.
+  hardware configuration, boot setup and local storage.
 - `modules/` is grouped by type, not by program. A module holds the NixOS and
   Home Manager settings for its topic together.
 - `modules/theme/` is the only place that decides how things look. Each file

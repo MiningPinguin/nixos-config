@@ -3,6 +3,7 @@
   imports = [
     ./boot.nix
     ./hardware-configuration.nix
+    ./storage.nix
     ../../modules/common.nix
     ../../modules/user.nix
     ../../modules/tools.nix
