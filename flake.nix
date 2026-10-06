@@ -28,7 +28,6 @@
 
   outputs = { ... }@inputs:
     let
-    # The one interactive user on every machine.
       user = "miningpinguin";
 
       channels = {

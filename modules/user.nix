@@ -6,9 +6,6 @@
     isNormalUser = true;
     description = "MiningPinguin";
     extraGroups = [ "networkmanager" "wheel" ];
-    # Passwords are set on the machine (`passwd miningpinguin`), or by
-    # uncommenting this and hashing a password with `mkpasswd`.
-    # initialHashedPassword = "";
   };
 
   home-manager.useGlobalPkgs = true;

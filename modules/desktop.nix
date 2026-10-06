@@ -1,19 +1,13 @@
-# The graphical desktop: X11, Plasma 6, audio and the applications that go
-# with it. Used by d-mk4 and l-mk1.
 { pkgs, user, ... }:
 {
-  # Session
   services.xserver = {
     enable = true;
     xkb.layout = "us";
-    wacom.enable = true; # xf86-input-wacom plus the Plasma wacomtablet settings
+    wacom.enable = true;
   };
   services.displayManager.sddm.enable = true;
-  # Plasma pulls in plasma-workspace, kwin-x11, plasma-nm (with NetworkManager),
-  # breeze and friends, so none of those need to be listed again here.
   services.desktopManager.plasma6.enable = true;
 
-  # Splash screen. The theme is set in modules/theme/.
   boot.plymouth.enable = true;
 
   programs.firefox.enable = true;

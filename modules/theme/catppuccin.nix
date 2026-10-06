@@ -1,13 +1,10 @@
 # Catppuccin theming for NixOS, Home Manager and Plasma.
-# To switch theme backend later (e.g. Stylix), replace this file's import in
-# the host with a different module from this folder.
 # Note: the Plasma part needs modules/plasma.nix (plasma-manager) imported too.
 { inputs, lib, pkgs, user, ... }:let
   # Change the look here (flavors: latte, frappe, macchiato, mocha)
   flavor = "mocha";
   accent = "mauve";
 
-  # Plasma's theme names are capitalized: mocha -> Mocha
   cap = s: lib.toUpper (builtins.substring 0 1 s)
     + builtins.substring 1 (builtins.stringLength s) s;
   capFlavor = cap flavor;

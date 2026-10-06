@@ -1,4 +1,3 @@
-# Everything that applies to every machine in the repo.
 {
   networking.networkmanager.enable = true;
 
@@ -10,14 +9,12 @@
 
   nix.settings = {
     experimental-features = [ "nix-command" "flakes" ];
-    # Flakes refuse to build for users that are not trusted.
     trusted-users = [ "root" "wheel" ];
   };
 
   security.sudo.wheelNeedsPassword = true;
   users.mutableUsers = true;
 
-  # Remote access, so every machine is reachable by name
   services.tailscale.enable = true;
 
   # Weekly cleanup of old generations and unused store paths
