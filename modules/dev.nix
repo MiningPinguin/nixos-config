@@ -1,6 +1,6 @@
 # Development workstation bits: containers, databases, toolchains.
 # Used by d-mk4 and l-mk1.
-{ lib, pkgs, user, ... }:
+{ config, lib, pkgs, user, ... }:
 {
   # Containers
   virtualisation.docker.enable = true;
@@ -22,6 +22,10 @@
     pnpm
     mutt
     opencode
+
+    # Nix language server and formatter
+    nixd
+    nixfmt
 
     # SDK headers, for building against Vulkan and SPIR-V
     vulkan-headers
@@ -47,7 +51,27 @@
 
     programs.vscodium = {
       enable = true;
-      profiles.default.userSettings."git.autofetch" = true;
+      profiles.default = {
+        userSettings = {
+          "git.autofetch" = true;
+          "nix.enableLanguageServer" = true;
+          "nix.serverPath" = "nixd";
+          "nix.serverSettings".nixd = {
+            formatting.command = [ "nixfmt" ];
+            options = {
+              nixos.expr = ''
+                (builtins.getFlake "/home/${user}/nixos-config")
+                  .nixosConfigurations.${config.networking.hostName}.options
+              '';
+              home-manager.expr = ''
+                (builtins.getFlake "/home/${user}/nixos-config")
+                  .nixosConfigurations.${config.networking.hostName}
+                  .options.home-manager.users.type.getSubOptions []
+              '';
+            };
+          };
+        };
+      };
     };
   };
 }
