@@ -5,12 +5,8 @@
     xkb.layout = "us";
     wacom.enable = true;
   };
-  services.displayManager.sddm.enable = true;
-  services.desktopManager.plasma6.enable = true;
 
   boot.plymouth.enable = true;
-
-  programs.firefox.enable = true;
 
   # Printing
   services.printing.enable = true;
@@ -37,17 +33,6 @@
   services.flatpak.enable = true;
 
   environment.systemPackages = with pkgs; [
-    kdePackages.ark
-    kdePackages.dolphin
-    kdePackages.kate
-    kdePackages.kcalc
-    kdePackages.kclock
-    kdePackages.kgamma
-    kdePackages.konsole
-    kdePackages.partitionmanager
-    kdePackages.plasma-sdk
-    kdePackages.plymouth-kcm
-
     # Remote desktop, file dialogs and media playback
     gvfs
     remmina
