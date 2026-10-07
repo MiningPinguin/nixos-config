@@ -46,6 +46,7 @@
   # Proprietary and user-facing applications.
   home-manager.users.${user}.home.packages = with pkgs; [
     discord
+    firefox
     google-chrome
     jellyfin-desktop
     spotify
