@@ -2,32 +2,44 @@
 
 Flake-based NixOS configuration for my machines.
 
-| Host   | Role           | Modules                                          |
-|--------|----------------|--------------------------------------------------|
-| d-mk4  | desktop        | common, user, tools, dev, desktop, gaming, plasma, theme |
-| l-mk1  | laptop         | common, user, tools, dev, desktop                |
-| s-mk1  | file server    | common, user, tools, servers/base, servers/fileserver |
-| s2-mk1 | network server | common, user, tools, servers/base, servers/network |
+| Host   | Role           | Purpose                |
+|--------|----------------|------------------------|
+| d-mk4  | desktop        | gaming + development   |
+| l-mk1  | laptop         | development            |
+| s-mk1  | file server    | fileserver + docker    |
+| s2-mk1 | network server | networking             |
 
 ## Layout
 
-- `flake.nix` defines the inputs, the username, and one output per host.
-- `hosts/<name>/` holds what is specific to one machine: its module list,
-  hardware configuration, boot setup and local storage.
-- `modules/` is grouped by type, not by program. A module holds the NixOS and
-  Home Manager settings for its topic together.
-- `modules/theme/` is the only place that decides how things look. Each file
-  there is a complete backend (currently `catppuccin.nix`), so switching theme
-  system means swapping one import in the host.
+- `flake.nix` — flake inputs, the username, one output per host.
+- `hosts/<name>/` — what is specific to one machine: module list, hardware, boot, storage.
+- `modules/` — shared settings grouped by topic, not by program. A topic's NixOS and Home Manager options live in the same file.
+- `modules/theme/` — appearance. One file per backend.
 
 ## Rules
 
-- A setting is defined once. The username lives in `flake.nix`; the theme
-  flavor and accent live in `modules/theme/catppuccin.nix`.
-- `user.nix` configures the account only. Programs live in the module for
-  their topic.
-- Looks live in `modules/theme/`, behavior lives in the module for the topic
-  (for example `modules/plasma.nix`).
+- Every setting is defined in exactly one place.
+- A host selects modules; it does not configure them.
+- A module is host-agnostic. Adding it to a second host means importing it, never editing it, even if one host is its only user today.
+- The account is set up apart from the programs it uses.
+- Appearance is decided centrally. Topics never hardcode a theme, colour or icon.
+
+## Commits
+
+`<scope>: <imperative verb> <object>`, one line, no body.
+
+- Scope is who the change is for, not how many files it touches.
+- A change that only one machine needs gets that host's name.
+- A change to one shared topic gets the topic's name.
+- A change spanning several topics — a rename, a new host, a sweep of dead code — gets `repo`.
+- Lowercase, and no trailing period.
+- Capitals only for proper nouns and code, as in `README`, `GRUB`, `programs.vscodium`.
+- Name the change itself, not the act of changing.
+- Bundle related edits into one commit, joined with commas.
+
+## Example
+
+Changing the look: edit `flavor` and `accent` in `modules/theme/catppuccin.nix` and Plasma, editors, terminals and cursors all follow. A second theme system means a new file in `modules/theme/`, imported by the hosts that want it, and nothing else changes.
 
 ## Rebuilding
 
@@ -35,5 +47,5 @@ Flake-based NixOS configuration for my machines.
 sudo nixos-rebuild switch --flake .#<host>
 ```
 
-Use `boot` instead of `switch` for changes to the bootloader or hostname.
+Use `boot` instead of `switch` for bootloader or hostname changes.
 New files must be staged with `git add` before a flake build can see them.
