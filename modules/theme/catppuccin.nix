@@ -21,6 +21,10 @@ in
 
   home-manager.sharedModules = [ inputs.catppuccin.homeModules.catppuccin ];
   home-manager.users.${user} = {
+    # Required by Home Manager since it stopped inferring this.
+    # Extract to a shared module if another backend needs it.
+    home.pointerCursor.enable = true;
+
     catppuccin = {
       enable = true;
       autoEnable = true;
