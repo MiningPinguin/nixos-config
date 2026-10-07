@@ -12,6 +12,7 @@
     ../../modules/gaming.nix
     ../../modules/plasma.nix
     ../../modules/theme/catppuccin.nix
+    ../../modules/sync.nix
   ];
 
   system.stateVersion = "26.05";
