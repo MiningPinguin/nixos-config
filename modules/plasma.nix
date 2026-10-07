@@ -27,12 +27,12 @@
     # The layout is applied by a startup script on the next login after a
     # rebuild, replacing any panel edits made by hand.
     panels = [
-      # Bottom: launcher and pinned apps, on every screen.
+      # Applications: what you launch and switch to.
       {
         location = "bottom";
         screen = "all";
         lengthMode = "fit";
-        alignment = "center";
+        alignment = "left";
         hiding = "dodgewindows";
         floating = true;
         opacity = "translucent";
@@ -52,13 +52,13 @@
         ];
       }
 
-      # Top: system tray and clock, on every screen.
+      # Status: what the machine is telling you.
       {
-        location = "top";
+        location = "bottom";
         height = 32;
         screen = "all";
         lengthMode = "fit";
-        alignment = "center";
+        alignment = "right";
         hiding = "dodgewindows";
         floating = true;
         opacity = "translucent";
