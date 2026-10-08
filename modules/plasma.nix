@@ -6,6 +6,9 @@
   services.displayManager.sddm.enable = true;
   services.desktopManager.plasma6.enable = true;
 
+  # Phone bridge: file transfer, clipboard and notifications
+  programs.kdeconnect.enable = true;
+
   environment.systemPackages = with pkgs; [
     kdePackages.ark
     kdePackages.dolphin
