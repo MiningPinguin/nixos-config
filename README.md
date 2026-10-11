@@ -39,7 +39,15 @@ Flake-based NixOS configuration for my machines.
 
 ## Example
 
-Changing the look: edit `flavor` and `accent` in `modules/theme/catppuccin.nix` and Plasma, editors, terminals and cursors all follow. A second theme system means a new file in `modules/theme/`, imported by the hosts that want it, and nothing else changes.
+- Changing the look means editing `flavor` and `accent` in `modules/theme/catppuccin.nix`.
+  - Plasma, editors, terminals and cursors follow, because none of them name a colour.
+  - No host file changes, because no host file ever held the choice.
+- A second theme system means a new file in `modules/theme/`, imported by the hosts that want it, and nothing else changes.
+- The same holds outside appearance.
+  - A setting every host wants belongs in `modules/`, not in each host.
+  - A setting one host wants belongs in `hosts/<name>/`, not in a module that would then need a condition to avoid changing the others.
+- What does not work is the reverse: reaching into `modules/` from a host to override a topic, or adding an `if host == ...` guard to a shared module.
+  - Both put a decision in two places, and the second place is the one nobody reads.
 
 ## Rebuilding
 
