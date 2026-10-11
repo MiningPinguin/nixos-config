@@ -14,6 +14,7 @@
     ../../modules/startup.nix
     ../../modules/theme/catppuccin.nix
     ../../modules/sync.nix
+    ../../modules/updates.nix
   ];
 
   system.stateVersion = "26.05";

@@ -70,6 +70,25 @@ Recheck when any of these change:
 - Plasma restores a lock screen component for global themes, or documents an equivalent for shell packages.
 - `catppuccin-kde` or the `catppuccin` flake ships a lock screen.
 
+## Updates
+
+- On login, the desktop reports which packages in this config have newer versions upstream.
+  - The pop-up carries a button that copies the command to update them, so the desktop itself never rebuilds anything.
+- It compares two evaluations of the config, never a build.
+  - It never writes `flake.lock`, so a report can never turn into a change.
+- Packages are read off the config rather than looked up by name.
+  - nixpkgs dropped the top-level KDE Gear aliases, so name lookup would silently miss most of the desktop.
+- Nix cannot update one package, so the button updates everything or nothing.
+- Bumps sharing a from and a to fold into one line, and the pop-up speaks only when that set changes.
+- State lives in `~/.local/state/nixos-config/`.
+  - Deleting it costs nothing but the next login's check.
+
+To see the report again:
+
+```
+rm ~/.local/state/nixos-config/seen
+```
+
 ## Rebuilding
 
 ```
