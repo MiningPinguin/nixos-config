@@ -49,6 +49,27 @@ Flake-based NixOS configuration for my machines.
 - What does not work is the reverse: reaching into `modules/` from a host to override a topic, or adding an `if host == ...` guard to a shared module.
   - Both put a decision in two places, and the second place is the one nobody reads.
 
+## Known limitations
+
+### Lock screen
+
+- SDDM draws the login screen and kscreenlocker draws the lock screen: separate programs, separate settings ([SDDM's maintainer on this](https://github.com/sddm/sddm/issues/721)).
+  - Nothing binds them together.
+  - nixpkgs has no option over either one, so there is nowhere to put a shared decision.
+- Up to Plasma 6.0 a theme could supply one via `contents/lockscreen/LockScreen.qml` in its global theme ([porting guide](https://develop.kde.org/docs/plasma/theme/theme-porting-to-plasma6)).
+  - Both surfaces then came from the same file, so one theme file covered both.
+- Since Plasma 6.1 it comes from the Plasma shell package instead ([source](https://invent.kde.org/plasma/kscreenlocker/-/blob/master/settings/shell_integration.cpp)).
+  - The global theme lost that hook, so a theme can no longer supply a lock screen.
+  - Breeze, the theme Plasma itself ships, does not provide one either.
+- No theme fills the gap.
+  - `catppuccin-kde` has only a splash screen.
+  - Neither nixpkgs nor the `catppuccin` flake packages a lock screen.
+
+Recheck when any of these change:
+
+- Plasma restores a lock screen component for global themes, or documents an equivalent for shell packages.
+- `catppuccin-kde` or the `catppuccin` flake ships a lock screen.
+
 ## Rebuilding
 
 ```
