@@ -8,7 +8,14 @@ let
     "intellij.prettierJS"
     "zielu.gittoolbox"
     "com.intellij.spring.debugger"
+    
+    "org.jetbrains.android"
+    "com.android.tools.design"
+    "androidx.compose.plugins.idea"
+    "com.intellij.nativeDebug"
+    "org.jetbrains.kotlin-toolchain"
     "com.jetbrains.kmm"
+    
     "com.intellij.swagger"
     "nix-idea"
     "org.toml.lang"
