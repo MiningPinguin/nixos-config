@@ -1,3 +1,14 @@
+# The shared desktop: X, audio, Bluetooth, Flatpak and the graphical apps.
+#
+# services.xserver.enable is also what turns hardware.graphics on. nixpkgs does
+# that in services.graphical-desktop, with mkDefault, for any host with an X
+# server or a display manager. Nothing here sets it, and nothing should have to.
+#
+# Two things need it and would fail without a word of complaint: Wine loses its
+# 32-bit drivers (modules/gaming.nix), and the llama-swap Vulkan drivers stop
+# loading on d-mk4. If either breaks, read
+# nixos/modules/services/misc/graphical-desktop.nix first, then set
+# hardware.graphics.enable = true here.
 { pkgs, user, ... }:
 {
   services.xserver = {

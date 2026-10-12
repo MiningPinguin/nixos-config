@@ -1,8 +1,7 @@
+# Inert unless hardware.graphics.enable is on, which nixpkgs does for any
+# graphical desktop. See the note in modules/desktop.nix.
 { pkgs, ... }: {
-  hardware.graphics = {
-    enable = true;
-    enable32Bit = true;
-  };
+  hardware.graphics.enable32Bit = true;
 
   programs.steam = {
     enable = true;
