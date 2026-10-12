@@ -48,7 +48,6 @@
       android-studio
       godot
       kicad
-      llama-cpp-vulkan
     ];
 
     programs.vscodium = {

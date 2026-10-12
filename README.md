@@ -12,7 +12,7 @@ Flake-based NixOS configuration for my machines.
 ## Layout
 
 - `flake.nix` — flake inputs, the username, one output per host.
-- `hosts/<name>/` — what is specific to one machine: module list, hardware, boot, storage.
+- `hosts/<name>/` — what is specific to one machine.
 - `modules/` — shared settings grouped by topic, not by program. A topic's NixOS and Home Manager options live in the same file.
 - `modules/theme/` — appearance. One file per backend.
 
@@ -88,6 +88,22 @@ To see the report again:
 ```
 rm ~/.local/state/nixos-config/seen
 ```
+
+## Local models
+
+- `hosts/d-mk4/llm.nix` serves language models on d-mk4. Nothing runs until a client connects.
+  - `llm.socket` accepts the connection on `127.0.0.1:8080`.
+  - `llm.service` is `systemd-socket-proxyd`, forwarding to llama-swap on port 8081.
+  - `llama-swap.service` reads the model out of the request, starts `llama-server` for it, and swaps models as they are asked for.
+- Shutdown happens in two stages, because a model held in VRAM holds the GPU.
+  - llama-swap unloads a model after 300 seconds without requests.
+  - The proxy exits after 10 minutes without traffic, and systemd stops llama-swap with it.
+- Models live on `/mnt/extra/models` and are listed in `models`.
+  - Each gets a context of 120000 unless it names its own.
+  - Adding one to that list is all it takes: opencode reads the same attribute set, so it shows up there too.
+  - Nothing fetches them. The `.gguf` files have to be on that disk already.
+- It needs `hardware.graphics`, which this config never sets on purpose.
+  - nixpkgs turns it on for any host with an X server or a display manager. See the note in `modules/desktop.nix` for what to check when that stops being true.
 
 ## Rebuilding
 
