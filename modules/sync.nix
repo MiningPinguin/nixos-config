@@ -42,6 +42,9 @@
           "Thumbs.db"
           "*~"
           "*.swp"
+          ".gradle"
+          ".idea"
+          ".kotlin"
         ];
 
         # Keep replaced files around so a bad sync can be undone.
