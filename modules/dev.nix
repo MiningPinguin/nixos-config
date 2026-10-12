@@ -2,6 +2,8 @@
 # Used by d-mk4 and l-mk1.
 { config, lib, pkgs, user, ... }:
 {
+  imports = [ ./dev/intellij.nix ];
+
   # Containers
   virtualisation.docker.enable = true;
   # mkAfter so this appends to the groups from modules/user.nix instead of
@@ -42,9 +44,9 @@
 
   home-manager.users.${user} = {
     home.packages = with pkgs; [
+      # No plugins: addPlugins cannot inject into it, NixOS/nixpkgs#479647
       android-studio
       godot
-      jetbrains-toolbox
       kicad
       llama-cpp-vulkan
     ];
