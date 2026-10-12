@@ -2,18 +2,22 @@
 
 Flake-based NixOS configuration for my machines.
 
-| Host   | Role           | Purpose                |
-|--------|----------------|------------------------|
-| d-mk4  | desktop        | gaming + development   |
-| l-mk1  | laptop         | development            |
-| s-mk1  | file server    | fileserver + docker    |
-| s2-mk1 | network server | networking             |
+| Host   | Role           | Purpose                | NixOS     |
+|--------|----------------|------------------------|-----------|
+| d-mk4  | desktop        | gaming + development   | installed |
+| l-mk1  | laptop         | development            | pending   |
+| s-mk1  | file server    | fileserver + docker    | pending   |
+| s2-mk1 | network server | networking             | pending   |
+
+Only d-mk4 is on this config, so the commands under Rebuilding apply to it until the others are installed. A host can have an entry here before the machine is on NixOS.
 
 ## Layout
 
 - `flake.nix` — flake inputs, the username, one output per host.
 - `hosts/<name>/` — what is specific to one machine.
 - `modules/` — shared settings grouped by topic, not by program. A topic's NixOS and Home Manager options live in the same file.
+  - `modules/servers/` — what the headless machines share (`base.nix`, ssh) plus one file per role, so a host picks the service it runs.
+  - `modules/dev/` — toolchains, with anything large enough to manage its own plugins in a file of its own.
 - `modules/theme/` — appearance. One file per backend.
 
 ## Rules
@@ -103,7 +107,23 @@ rm ~/.local/state/nixos-config/seen
   - Adding one to that list is all it takes: opencode reads the same attribute set, so it shows up there too.
   - Nothing fetches them. The `.gguf` files have to be on that disk already.
 - It needs `hardware.graphics`, which this config never sets on purpose.
-  - nixpkgs turns it on for any host with an X server or a display manager. See the note in `modules/desktop.nix` for what to check when that stops being true.
+  - nixpkgs turns it on for any host with an X server or a display manager, which `services.xserver.enable` counts as. Two things need it and would fail without a word of complaint: Wine loses its 32-bit drivers, and llama-swap's Vulkan drivers stop loading on d-mk4.
+  - If either breaks, read `nixos/modules/services/misc/graphical-desktop.nix` in nixpkgs first, then set `hardware.graphics.enable = true` in `modules/desktop.nix`.
+
+## Syncthing
+
+- `~/Projects` is synced between d-mk4, s-mk1 and l-mk1.
+- It is the Home Manager module, because `services.syncthing` runs as its own account and cannot read this user's home.
+- Everything is declared in `modules/sync.nix`, so anything added in the GUI is gone at the next activation.
+  - Until s-mk1 and l-mk1 are installed on this config, they declare the same folder and the same folder id (`miningpinguin-projects`) through their own Syncthing. Syncthing requires the folder and its id to match on every device, so changing either means changing them on all three.
+- The GUI listens on loopback only, so reach it over SSH:
+
+  ```
+  ssh -L 8384:127.0.0.1:8384 d-mk4
+  ```
+
+- Replaced files are kept, 10 versions deep.
+- Build output and editor droppings (`node_modules`, `target`, `build`, `.idea` and friends) are excluded rather than synced.
 
 ## Rebuilding
 
@@ -115,5 +135,6 @@ sudo nixos-rebuild switch --flake .#$host
 nix flake update && sudo nixos-rebuild switch --flake .#$host
 ```
 
-Use `boot` instead of `switch` for bootloader or hostname changes.
+Use `boot` when a change should land at the next reboot rather than now. It builds the configuration and makes it the boot default, but does not activate it, so the running system stays as it is. `switch` does both, and is the right choice for everything else here.
+Hostname comes from the host's name, set centrally in `flake.nix`, so it is never a host-file edit.
 New files must be staged with `git add` before a flake build can see them.
