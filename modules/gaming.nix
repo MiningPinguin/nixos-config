@@ -1,5 +1,5 @@
 # Inert unless hardware.graphics.enable is on, which nixpkgs does for any
-# graphical desktop. See the note in modules/desktop.nix.
+# graphical desktop. The README explains what depends on it.
 { pkgs, ... }: {
   hardware.graphics.enable32Bit = true;
 

@@ -1,8 +1,4 @@
-# Syncthing: file sync between d-mk4, s-mk1 and l-mk1. The Home Manager
-# module, because services.syncthing runs as its own account and cannot read
-# this user's home. Everything is declared below, so nothing added in the GUI
-# survives the next activation. The GUI is loopback only:
-#   ssh -L 8384:127.0.0.1:8384 d-mk4
+# Syncthing for ~/Projects. The README has how it is set up and reached.
 { user, ... }:
 {
   home-manager.users.${user}.services.syncthing = {
