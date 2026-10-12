@@ -5,6 +5,4 @@
     enable = true;
     settings.PermitRootLogin = "no";
   };
-
-  # zramSwap itself comes from modules/common.nix.
 }

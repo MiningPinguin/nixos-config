@@ -1,16 +1,5 @@
 # What in the config has a newer version than what is installed, as a pop-up
-# on login.
-#
-# For a flake, "out of date" has one meaning: an input has moved on since
-# flake.lock was written. Reporting package versions rather than input
-# revisions means evaluating this config twice, once as locked and once with
-# updates.input pinned to its upstream head, and diffing the two.
-#
-# Packages are read off the config rather than looked up by name, because
-# nixpkgs no longer has top-level aliases for KDE Gear: pkgs.kate and
-# pkgs.konsole do not exist, only kdePackages.kate and kdePackages.konsole.
-# Anything added to a module later is covered without a watchlist here.
-#
+# on login. The README has how the report is put together.
 # The upstream dump is cached per revision, so a login only re-evaluates once
 # the tracked input has actually moved.
 { config, lib, pkgs, user, ... }:

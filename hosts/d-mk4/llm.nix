@@ -1,5 +1,4 @@
 # Local language models on d-mk4, served on demand.
-# Needs hardware.graphics, which modules/desktop.nix leaves to nixpkgs.
 { lib, pkgs, user, ... }:
 let
   modelsDir = "/mnt/extra/models";

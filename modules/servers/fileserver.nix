@@ -8,13 +8,7 @@
     # rebuilding the machine.
     usershares.enable = true;
 
-    # A share is a section in smb.conf, e.g.
-    #   media = {
-    #     path = "/srv/media";
-    #     "read only" = "no";
-    #     comment = "Media";
-    #   };
-    # The directory has to exist (systemd.tmpfiles.rules) and be mounted
-    # before it shows up.
+    # A share is a section in smb.conf, and the directory has to exist
+    # (systemd.tmpfiles.rules) and be mounted before it shows up.
   };
 }

@@ -22,6 +22,5 @@
     '';
   };
 
-  # Newest stable kernel
   boot.kernelPackages = pkgs.linuxPackages_latest;
 }
