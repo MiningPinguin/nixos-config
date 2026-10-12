@@ -92,7 +92,11 @@ rm ~/.local/state/nixos-config/seen
 ## Rebuilding
 
 ```
-sudo nixos-rebuild switch --flake .#<host>
+sudo nixos-rebuild switch --flake .#$host
+```
+
+```
+nix flake update && sudo nixos-rebuild switch --flake .#$host
 ```
 
 Use `boot` instead of `switch` for bootloader or hostname changes.
