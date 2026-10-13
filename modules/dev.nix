@@ -1,8 +1,11 @@
 # Development workstation bits: containers, databases, toolchains.
 # Used by d-mk4 and l-mk1.
-{ config, lib, pkgs, user, ... }:
+{ lib, pkgs, user, ... }:
 {
-  imports = [ ./dev/intellij.nix ];
+  imports = [
+    ./dev/intellij.nix
+    ./dev/vscodium.nix
+  ];
 
   # Containers
   virtualisation.docker.enable = true;
@@ -42,37 +45,10 @@
     kdePackages.extra-cmake-modules
   ];
 
-  home-manager.users.${user} = {
-    home.packages = with pkgs; [
-      # No plugins: addPlugins cannot inject into it, NixOS/nixpkgs#479647
-      android-studio
-      godot
-      kicad
-    ];
-
-    programs.vscodium = {
-      enable = true;
-      profiles.default = {
-        userSettings = {
-          "git.autofetch" = true;
-          "nix.enableLanguageServer" = true;
-          "nix.serverPath" = "nixd";
-          "nix.serverSettings".nixd = {
-            formatting.command = [ "nixfmt" ];
-            options = {
-              nixos.expr = ''
-                (builtins.getFlake "/home/${user}/nixos-config")
-                  .nixosConfigurations.${config.networking.hostName}.options
-              '';
-              home-manager.expr = ''
-                (builtins.getFlake "/home/${user}/nixos-config")
-                  .nixosConfigurations.${config.networking.hostName}
-                  .options.home-manager.users.type.getSubOptions []
-              '';
-            };
-          };
-        };
-      };
-    };
-  };
+  home-manager.users.${user}.home.packages = with pkgs; [
+    # No plugins: addPlugins cannot inject into it, NixOS/nixpkgs#479647
+    android-studio
+    godot
+    kicad
+  ];
 }
