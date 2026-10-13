@@ -15,6 +15,7 @@
     ../../modules/startup.nix
     ../../modules/theme/catppuccin.nix
     ../../modules/sync.nix
+    ../../modules/notes.nix
     ../../modules/updates.nix
   ];
 
