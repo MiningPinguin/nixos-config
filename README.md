@@ -55,6 +55,11 @@ Only d-mk4 is on this config, so the commands under Rebuilding apply to it until
 
 ## Known limitations
 
+### VSCodium extensions
+
+- Extensions come from nixpkgs, at nixpkgs' version rather than the marketplace's, and only if nixpkgs packages them.
+- Home Manager installs the list as written, so an extension pack installs the pack alone; the Java extensions are listed one by one for that reason.
+
 ### Lock screen
 
 - SDDM draws the login screen and kscreenlocker draws the lock screen: separate programs, separate settings ([SDDM's maintainer on this](https://github.com/sddm/sddm/issues/721)).

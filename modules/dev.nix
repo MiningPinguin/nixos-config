@@ -32,6 +32,9 @@
     nixd
     nixfmt
 
+    # LaTeX, for latex-workshop in VSCodium
+    texliveFull
+
     # SDK headers, for building against Vulkan and SPIR-V
     vulkan-headers
     spirv-headers
