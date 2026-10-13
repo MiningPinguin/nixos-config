@@ -48,6 +48,8 @@
               "applications:discord.desktop"
               "applications:spotify.desktop"
               "applications:codium.desktop"
+              "applications:intellij-idea.desktop"
+              "applications:md.obsidian.Obsidian.desktop"
             ];
           }
           "org.kde.plasma.marginsseparator"
