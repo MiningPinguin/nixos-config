@@ -83,6 +83,7 @@ Recheck when any of these change:
 
 - On login, the desktop reports which packages in this config have newer versions upstream.
   - The pop-up carries a button that copies the command to update them, so the desktop itself never rebuilds anything.
+  - That command names the config directory instead of `.`, so it can be pasted in any directory.
 - It compares two evaluations of the config, never a build.
   - It never writes `flake.lock`, so a report can never turn into a change.
 - Packages are read off the config rather than looked up by name.

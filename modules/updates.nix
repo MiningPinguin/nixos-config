@@ -125,7 +125,8 @@ let
           printf '  %-18s %-22s ->  %s\n' "$label" "$from" "$to"
         done)
 
-      rebuild="nix flake update && sudo nixos-rebuild switch --flake .#$host"
+      # Absolute, so the pasted command works from any directory.
+      rebuild="nix flake update --flake $dir && sudo nixos-rebuild switch --flake path:$dir#$host"
 
       # --action implies --wait, so this blocks until the toast is clicked or
       # expires. Klipper is the clipboard under Wayland, where wl-copy has no
