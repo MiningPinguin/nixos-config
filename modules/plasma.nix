@@ -17,7 +17,6 @@
     kdePackages.kate
     kdePackages.kcalc
     kdePackages.kclock
-    kdePackages.kgamma
     kdePackages.konsole
     kdePackages.partitionmanager
     kdePackages.plasma-sdk
