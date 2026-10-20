@@ -3,15 +3,16 @@
 { lib, pkgs, user, ... }:
 {
   imports = [
-    ./dev/intellij.nix
+    ./dev/jetbrains/intellij.nix
     ./dev/vscodium.nix
+    ./dev/jetbrains/android-studio.nix
   ];
 
   # Containers
   virtualisation.docker.enable = true;
   # mkAfter so this appends to the groups from modules/user.nix instead of
   # replacing them.
-  users.users.${user}.extraGroups = lib.mkAfter [ "docker" ];
+  users.users.${user}.extraGroups = lib.mkAfter [ "docker" "kvm" ];
 
   # Databases
   services.postgresql.enable = true;
@@ -48,10 +49,15 @@
     kdePackages.extra-cmake-modules
   ];
 
-  home-manager.users.${user}.home.packages = with pkgs; [
-    # No plugins: addPlugins cannot inject into it, NixOS/nixpkgs#479647
-    android-studio
-    godot
-    kicad
-  ];
+  home-manager.users.${user} = {
+    home.packages = with pkgs; [
+      kicad
+    ];
+
+    # Shared Android SDK location for both JetBrains IDEs.
+    home.sessionVariables = {
+      ANDROID_HOME = "/home/${user}/Android/Sdk";
+      ANDROID_SDK_ROOT = "/home/${user}/Android/Sdk";
+    };
+  };
 }

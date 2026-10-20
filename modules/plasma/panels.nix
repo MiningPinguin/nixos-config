@@ -28,6 +28,7 @@
               "applications:spotify.desktop"
               "applications:codium.desktop"
               "applications:intellij-idea.desktop"
+              "applications:android-studio.desktop"
               "applications:md.obsidian.Obsidian.desktop"
             ];
           }
