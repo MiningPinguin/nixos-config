@@ -62,6 +62,23 @@ in
       ".local/share/icons/${globalTheme lightFlavor}-Cursors".source = cursorSource lightFlavor;
     };
 
+    # JetBrains IDEs read their color scheme from a seed file, so the look
+    # follows the central flavor here instead of being named in modules/dev.
+    xdg.configFile."intellij/config/options/colors.scheme.xml".text = ''
+      <application>
+        <component name="EditorColorsManagerImpl">
+          <global_color_scheme name="Catppuccin ${capFlavor}" />
+        </component>
+      </application>
+    '';
+
+    xdg.configFile."android-studio/config/options/colors.scheme.xml".text = ''
+      <application>
+        <component name="EditorColorsManagerImpl">
+          <global_color_scheme name="Catppuccin ${capFlavor}" />
+        </component>
+      </application>
+    '';
     programs.plasma.workspace = {
       lookAndFeel = globalTheme flavor;
       colorScheme = "Catppuccin${capFlavor}${capAccent}";
