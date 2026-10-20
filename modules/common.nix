@@ -15,6 +15,9 @@
     # Triggers a GC during a build once free space drops below 5G.
     min-free = 5 * 1024 * 1024 * 1024;
     max-free = 10 * 1024 * 1024 * 1024;
+
+    # Deduplicate identical files across store paths to save disk space.
+    auto-optimise-store = true;
   };
 
   security.sudo.wheelNeedsPassword = true;
