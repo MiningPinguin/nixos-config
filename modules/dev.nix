@@ -22,6 +22,7 @@
     docker-compose
     cmake
     jdk
+    jdk17
     maven
     ninja
     nodejs
@@ -49,15 +50,19 @@
     kdePackages.extra-cmake-modules
   ];
 
+  environment.variables = {
+    JAVA_HOME = "${pkgs.jdk17}";
+    ANDROID_HOME = "/home/${user}/Android/Sdk";
+    ANDROID_SDK_ROOT = "/home/${user}/Android/Sdk";
+  };
+  environment.variables.PATH = [
+    "/home/${user}/Android/Sdk/platform-tools"
+    "/home/${user}/Android/Sdk/emulator"
+  ];
+
   home-manager.users.${user} = {
     home.packages = with pkgs; [
       kicad
     ];
-
-    # Shared Android SDK location for both JetBrains IDEs.
-    home.sessionVariables = {
-      ANDROID_HOME = "/home/${user}/Android/Sdk";
-      ANDROID_SDK_ROOT = "/home/${user}/Android/Sdk";
-    };
   };
 }
