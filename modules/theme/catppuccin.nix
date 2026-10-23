@@ -72,10 +72,26 @@ in
       </application>
     '';
 
+    xdg.configFile."intellij/config/options/laf.xml".text = ''
+      <application>
+        <component name="LafManager">
+          <laf themeId="com.github.catppuccin.${flavor}.islands.jetbrains" />
+        </component>
+      </application>
+    '';
+
     xdg.configFile."android-studio/config/options/colors.scheme.xml".text = ''
       <application>
         <component name="EditorColorsManagerImpl">
           <global_color_scheme name="Catppuccin ${capFlavor}" />
+        </component>
+      </application>
+    '';
+
+    xdg.configFile."android-studio/config/options/laf.xml".text = ''
+      <application>
+        <component name="LafManager">
+          <laf themeId="com.github.catppuccin.${flavor}.islands.jetbrains" />
         </component>
       </application>
     '';
