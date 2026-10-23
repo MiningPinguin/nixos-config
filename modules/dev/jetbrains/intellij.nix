@@ -19,6 +19,10 @@ let
   pluginIds = common.basePluginIds ++ [
     "com.intellij.spring.debugger"
     "com.intellij.swagger"
+    "org.jetbrains.android"
+    "com.android.tools.design"
+    "androidx.compose.plugins.idea"
+    "org.jetbrains.kotlin-toolchain"
   ];
   plugins = builtins.attrValues (inputs.nix-jetbrains-plugins.lib.pluginsForIde
     pkgs pkgs.jetbrains.idea pluginIds) ++ [ kmmPlugin ];
