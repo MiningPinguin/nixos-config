@@ -3,7 +3,19 @@
 let
   common = import ./common.nix { inherit pkgs; };
 
-  pluginIds = common.basePluginIds ++ [ "com.jetbrains.kmm" ];
+  # Android Studio ships its own native-debug module inside the KMP plugin,
+  # so the separate Native Debugging Support plugin conflicts with it.
+  # Prettier needs the JS analysis plugin, which AS does not ship.
+  pluginIds = [
+    "izhangzhihao.rainbow.brackets"
+    "zielu.gittoolbox"
+    "nix-idea"
+    "org.toml.lang"
+    "com.github.catppuccin.jetbrains"
+    "com.intellij.marketplace"
+    "org.jetbrains.kotlin-toolchain"
+    "com.jetbrains.kmm"
+  ];
   plugins = builtins.attrValues (inputs.nix-jetbrains-plugins.lib.pluginsForIde
     pkgs pkgs.android-studio pluginIds);
 
@@ -12,7 +24,7 @@ let
   androidStudio = pkgs.android-studio;
 
   androidStudioWrapper = pkgs.writeShellScriptBin "android-studio" ''
-    export IDEA_PROPERTIES=/home/${user}/.config/android-studio/idea.properties
+    export STUDIO_PROPERTIES=/home/${user}/.config/android-studio/idea.properties
     exec ${pkgs.lib.getExe androidStudio} "$@"
   '';
 in
