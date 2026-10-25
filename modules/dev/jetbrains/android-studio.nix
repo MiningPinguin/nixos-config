@@ -29,7 +29,7 @@ let
   '';
 in
 {
-  home-manager.users.${user} = { config, ... }: {
+  home-manager.users.${user} = {
     home.packages = [ androidStudioWrapper ];
 
     xdg.desktopEntries.android-studio = {
@@ -47,6 +47,8 @@ in
     xdg.configFile."android-studio/idea.properties".text = ''
       idea.config.path=/home/${user}/.config/android-studio/config
       idea.system.path=/home/${user}/.config/android-studio/system
+      idea.plugins.path=/home/${user}/.config/android-studio/config/plugins
+      idea.log.path=/home/${user}/.config/android-studio/system/log
     '';
 
     xdg.configFile."android-studio/config/options/android.sdk.path.xml".text = ''

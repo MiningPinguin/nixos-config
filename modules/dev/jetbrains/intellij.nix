@@ -35,7 +35,7 @@ let
   '';
 in
 {
-  home-manager.users.${user} = { config, ... }: {
+  home-manager.users.${user} = {
     home.packages = [ ideaWrapper ];
 
     xdg.desktopEntries.intellij-idea = {
@@ -48,6 +48,8 @@ in
     xdg.configFile."intellij/idea.properties".text = ''
       idea.config.path=/home/${user}/.config/intellij/config
       idea.system.path=/home/${user}/.config/intellij/system
+      idea.plugins.path=/home/${user}/.config/intellij/config/plugins
+      idea.log.path=/home/${user}/.config/intellij/system/log
     '';
 
     xdg.configFile."intellij/config/options/ide.general.xml".text =
