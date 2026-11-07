@@ -1,0 +1,46 @@
+// Syncthing ignore rules for PinkyTime
+// Keep source code + config; skip generated/dependency/build artifacts.
+
+// Dependencies
+node_modules
+
+// Expo / build artifacts
+.expo
+dist
+storybook-static
+.expo-shared
+
+// Native generated folders (regenerated via `expo prebuild`)
+android
+ios
+
+// Cypress output
+cypress/videos
+cypress/screenshots
+
+// Generated Expo types
+expo-env.d.ts
+
+// IDE / editor
+.idea
+.vscode
+
+// OS junk
+.DS_Store
+Thumbs.db
+desktop.ini
+
+// Logs
+*.log
+npm-debug.log*
+
+// Native build outputs
+*.apk
+*.aab
+*.ipa
+*.app
+
+// Misc caches
+.cache
+.tmp
+temp

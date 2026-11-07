@@ -1,5 +1,18 @@
-# Syncthing for ~/Projects. The README has how it is set up and reached.
-{ user, ... }:
+# Syncthing for folders inside ~/Projects. The README has how it is set up and reached.
+{ user, lib, ... }:
+let
+  # Ignore rules live in plain files next to this one, one pattern per line.
+  readIgnore = file: lib.splitString "\n" (lib.removeSuffix "\n" (builtins.readFile file));
+
+  # Keep replaced files around so a bad sync can be undone. Applied to every folder.
+  versioning = {
+    type = "simple";
+    params = {
+      keep = "6";
+      cleanoutDays = "30";
+    };
+  };
+in
 {
   home-manager.users.${user}.services.syncthing = {
     enable = true;
@@ -13,41 +26,32 @@
         id = "JYDXLVW-SHU3IWS-HQI3JQV-HP6DYWW-DXJJSZU-EGKOTDA-UVG3PP5-XOTMXA3";
       };
 
-      # Must be identical on every device, s-mk1 declares the same one.
-      folders.projects = {
-        path = "/home/${user}/Projects";
-        id = "miningpinguin-projects";
+      # Folders must stay in sync with what s-mk1 shares; its own Syncthing declares the same ones.
+      folders.obsidian = {
+        name = "Obsidian";
+        path = "/home/${user}/Projects/Obsidian";
+        id = "npupn-wshg2";
         devices = [
           "s-mk1"
           "l-mk1"
         ];
 
-        # Regenerable build output and editor droppings, no point syncing those.
-        ignorePatterns = [
-          "node_modules/"
-          "target/"
-          "dist/"
-          "build/"
-          "out/"
-          ".next/"
-          "__pycache__/"
-          ".venv/"
-          "*.pyc"
-          "*.o"
-          ".DS_Store"
-          "Thumbs.db"
-          "*~"
-          "*.swp"
-          ".gradle"
-          ".idea"
-          ".kotlin"
+        # .stignore itself never syncs between devices, so Nix writes it from this file.
+        ignorePatterns = readIgnore ./syncthing-ignore/obsidian.stignore;
+        inherit versioning;
+      };
+
+      folders.pinkytime = {
+        name = "Pinky-Time";
+        path = "/home/${user}/Projects/UCLL/PinkyTime";
+        id = "efggw-eo6ge";
+        devices = [
+          "s-mk1"
+          "l-mk1"
         ];
 
-        # Keep replaced files around so a bad sync can be undone.
-        versioning = {
-          type = "simple";
-          params.keep = "10";
-        };
+        ignorePatterns = readIgnore ./syncthing-ignore/pinkytime.stignore;
+        inherit versioning;
       };
     };
   };

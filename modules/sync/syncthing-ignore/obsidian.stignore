@@ -1,0 +1,11 @@
+.obsidian/cache/
+(?d)desktop.ini
+(?d)Thumbs.db
+(?d)ehthumbs.db
+(?d)~$*
+(?d)*~
+(?d).DS_Store
+(?d)._*
+*.tmp
+*.temp
+*.bak

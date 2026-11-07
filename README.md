@@ -118,18 +118,21 @@ rm ~/.local/state/nixos-config/seen
 
 ## Syncthing
 
-- `~/Projects` is synced between d-mk4, s-mk1 and l-mk1.
+- Folders inside `~/Projects` are shared individually.
 - It is the Home Manager module, because `services.syncthing` runs as its own account and cannot read this user's home.
-- Everything is declared in `modules/sync.nix`, so anything added in the GUI is gone at the next activation.
-  - Until s-mk1 and l-mk1 are installed on this config, they declare the same folder and the same folder id (`miningpinguin-projects`) through their own Syncthing. Syncthing requires the folder and its id to match on every device, so changing either means changing them on all three.
+- Everything is declared in `modules/sync/sync.nix`, so anything added in the GUI is gone at the next activation.
+  - Folders must stay in sync with what s-mk1 and l-mk1 declare through their own Syncthing: Syncthing requires the folder and its id to match on every device sharing it.
+  - `miningpinguin-projects` (`~/Projects` as one folder) was deliberately retired in favour of the per-folder shares.
+  - Ignore rules live in `modules/sync/sync.nix` (`ignorePatterns`) because `.stignore` is per-device and never syncs over.
 - The GUI listens on loopback only, so reach it over SSH:
 
   ```
-  ssh -L 8384:127.0.0.1:8384 d-mk4
+  ssh -L 3000:127.0.0.1:8384 miningpinguin@s-mk1
   ```
 
-- Replaced files are kept, 10 versions deep.
-- Build output and editor droppings (`node_modules`, `target`, `build`, `.idea` and friends) are excluded rather than synced.
+- Replaced files are kept, 6 versions deep / 30 days on `obsidian`.
+- Temp files and editor droppings are excluded rather than synced (`ignorePatterns` per folder).
+  - The `obsidian` folder mirrors the rules s-mk1 declared in its own `.stignore`.
 
 ## Rebuilding
 
