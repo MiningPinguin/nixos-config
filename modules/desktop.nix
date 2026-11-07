@@ -35,9 +35,6 @@
   # Wi-Fi
   networking.networkmanager.wifi.backend = "iwd";
 
-  # Flatpak, and with it the Plasma flatpak settings
-  services.flatpak.enable = true;
-
   environment.systemPackages = with pkgs; [
     # Remote desktop, file dialogs and media playback
     gvfs
