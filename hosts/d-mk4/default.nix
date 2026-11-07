@@ -14,7 +14,7 @@
     ../../modules/plasma.nix
     ../../modules/startup.nix
     ../../modules/theme/catppuccin.nix
-    ../../modules/sync.nix
+    ../../modules/sync/sync.nix
     ../../modules/notes.nix
     ../../modules/updates.nix
   ];
