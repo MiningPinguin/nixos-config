@@ -60,6 +60,41 @@
     "/home/${user}/Android/Sdk/emulator"
   ];
 
+  # Prebuilt binaries that expect a normal FHS layout
+  programs.nix-ld.enable = true;
+  programs.nix-ld.libraries = with pkgs; [
+    stdenv.cc.cc.lib
+    zlib
+    zstd
+    openssl
+    curl
+    expat
+
+    # What Electron-style apps link against
+    glib
+    nss
+    nspr
+    atk
+    at-spi2-atk
+    at-spi2-core
+    cups
+    dbus
+    libdrm
+    gtk3
+    pango
+    cairo
+    libxkbcommon
+    alsa-lib
+    libgbm
+    libX11
+    libXcomposite
+    libXdamage
+    libXext
+    libXfixes
+    libXrandr
+    libxcb
+  ];
+
   home-manager.users.${user} = {
     home.packages = with pkgs; [
       kicad
