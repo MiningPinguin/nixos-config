@@ -4,6 +4,7 @@
     ./boot.nix
     ./hardware-configuration.nix
     ./llm.nix
+    ./network.nix
     ./storage.nix
     ../../modules/common.nix
     ../../modules/user.nix

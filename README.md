@@ -112,6 +112,11 @@ rm ~/.local/state/nixos-config/seen
   - Each gets a context of 120000 unless it names its own.
   - Adding one to that list is all it takes: opencode reads the same attribute set, so it shows up there too.
   - Nothing fetches them. The `.gguf` files have to be on that disk already.
+- The port is loopback-only. Tunnel to it from the tailnet (`sshd` on d-mk4 is firewalled to `tailscale0`, and starts at boot without a login):
+
+  ```
+  ssh -L 8080:127.0.0.1:8080 miningpinguin@d-mk4-1
+  ```
 - It needs `hardware.graphics`, which this config never sets on purpose.
   - nixpkgs turns it on for any host with an X server or a display manager, which `services.xserver.enable` counts as. Two things need it and would fail without a word of complaint: Wine loses its 32-bit drivers, and llama-swap's Vulkan drivers stop loading on d-mk4.
   - If either breaks, read `nixos/modules/services/misc/graphical-desktop.nix` in nixpkgs first, then set `hardware.graphics.enable = true` in `modules/desktop.nix`.
@@ -133,6 +138,16 @@ rm ~/.local/state/nixos-config/seen
 - Replaced files are kept, 6 versions deep / 30 days on `obsidian`.
 - Temp files and editor droppings are excluded rather than synced (`ignorePatterns` per folder).
   - The `obsidian` folder mirrors the rules s-mk1 declared in its own `.stignore`.
+
+## Wake-on-LAN
+
+`d-mk4` keeps its `eno1` NIC armed on every boot, so a powered-off machine can be started from anywhere on the LAN. The local models are ready once it boots; nothing waits for a login.
+
+```
+nix shell nixpkgs#wakeonlan -c wakeonlan c8:7f:54:50:f4:f8
+```
+
+The board needs `Power On By PCI-E` enabled and `ErP Ready` disabled (APM settings); `ErP` cuts the standby power the NIC listens on. After a power cut the NIC is disarmed until the machine boots once, so that first start is still manual. Check the arm state with `sudo ethtool eno1 | grep Wake-on`, which should say `g`.
 
 ## Rebuilding
 
