@@ -11,8 +11,13 @@ storybook-static
 .expo-shared
 
 // Native generated folders (regenerated via `expo prebuild`)
-android
-ios
+/android
+/ios
+
+// Build output inside local Expo modules
+/modules/*/android/build
+/modules/*/android/.gradle
+/modules/*/ios/build
 
 // Cypress output
 cypress/videos
