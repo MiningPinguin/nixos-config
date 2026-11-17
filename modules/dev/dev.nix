@@ -3,9 +3,9 @@
 { lib, pkgs, user, ... }:
 {
   imports = [
-    ./dev/jetbrains/intellij.nix
-    ./dev/vscodium.nix
-    ./dev/jetbrains/android-studio.nix
+    ./jetbrains/intellij.nix
+    ./vscodium.nix
+    ./jetbrains/android-studio.nix
   ];
 
   # Containers

@@ -6,7 +6,7 @@
     ../../modules/common.nix
     ../../modules/user.nix
     ../../modules/tools.nix
-    ../../modules/dev.nix
+    ../../modules/dev/dev.nix
     ../../modules/desktop.nix
   ]
   ++ lib.optional (builtins.pathExists ./hardware-configuration.nix) ./hardware-configuration.nix;

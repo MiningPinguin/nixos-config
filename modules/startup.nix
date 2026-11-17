@@ -4,7 +4,7 @@
 # the same as the one plasma-manager declares for itself.
 #
 # KDE Connect is absent here on purpose. programs.kdeconnect.enable in
-# modules/plasma.nix already installs its autostart entry, so adding one would
+# modules/plasma/plasma.nix already installs its autostart entry, so adding one would
 # be the same setting in two places.
 { lib, pkgs, user, ... }:
 {

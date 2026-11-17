@@ -9,10 +9,10 @@
     ../../modules/common.nix
     ../../modules/user.nix
     ../../modules/tools.nix
-    ../../modules/dev.nix
+    ../../modules/dev/dev.nix
     ../../modules/desktop.nix
     ../../modules/gaming.nix
-    ../../modules/plasma.nix
+    ../../modules/plasma/plasma.nix
     ../../modules/startup.nix
     ../../modules/theme/catppuccin.nix
     ../../modules/sync/sync.nix

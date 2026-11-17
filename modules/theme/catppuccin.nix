@@ -1,5 +1,5 @@
 # Catppuccin theming for NixOS, Home Manager and Plasma.
-# Note: the Plasma part needs modules/plasma.nix (plasma-manager) imported too.
+# Note: the Plasma part needs modules/plasma/plasma.nix (plasma-manager) imported too.
 #
 # Plasma's dark mode switch swaps the whole global theme and defaults to Breeze,
 # so both sides are named below and lightFlavor is what it switches to.

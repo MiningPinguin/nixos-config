@@ -3,7 +3,7 @@
 # Looks (colors, icons, cursor) are set in modules/theme/.
 { pkgs, ... }:
 {
-  imports = [ ./plasma/panels.nix ];
+  imports = [ ./panels.nix ];
 
   services.displayManager.sddm.enable = true;
   services.desktopManager.plasma6.enable = true;
