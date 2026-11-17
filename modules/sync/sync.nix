@@ -26,6 +26,19 @@ in
         id = "JYDXLVW-SHU3IWS-HQI3JQV-HP6DYWW-DXJJSZU-EGKOTDA-UVG3PP5-XOTMXA3";
       };
 
+      folders.cv = {
+        name = "CV";
+        path = "/home/${user}/Projects/Work/CV";
+        id = "lqfgr-efdud";
+        devices = [
+          "s-mk1"
+          "l-mk1"
+        ];
+
+        ignorePatterns = readIgnore ./syncthing-ignore/cv.stignore;
+        inherit versioning;
+      };
+
       # Folders must stay in sync with what s-mk1 shares; its own Syncthing declares the same ones.
       folders.obsidian = {
         name = "Obsidian";
