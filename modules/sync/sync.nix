@@ -1,4 +1,4 @@
-# Syncthing for folders inside ~/Projects. The README has how it is set up and reached.
+# Syncthing for folders inside ~/Projects. docs/syncthing.md has how it is set up and reached.
 { user, lib, ... }:
 let
   # Ignore rules live in plain files next to this one, one pattern per line.

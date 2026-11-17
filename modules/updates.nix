@@ -1,5 +1,5 @@
 # What in the config has a newer version than what is installed, as a pop-up
-# on login. The README has how the report is put together.
+# on login. docs/operations.md has how the report is put together.
 # The upstream dump is cached per revision, so a login only re-evaluates once
 # the tracked input has actually moved.
 { config, lib, pkgs, user, ... }:

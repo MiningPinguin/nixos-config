@@ -2,8 +2,8 @@
 #
 # services.xserver.enable also turns hardware.graphics on, via nixpkgs'
 # mkDefault in services.graphical-desktop. Nothing here sets it, and nothing
-# should have to. The README says what depends on it and what to check if it
-# stops being true.
+# should have to. docs/architecture.md says what depends on it and what to
+# check if it stops being true.
 { pkgs, user, ... }:
 {
   services.xserver = {

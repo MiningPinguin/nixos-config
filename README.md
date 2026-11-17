@@ -1,164 +1,62 @@
 # nixos-config
 
-Flake-based NixOS configuration for my machines.
+Packages, services, users and the desktop are declared in Git, so a host is rebuilt from this repository instead of configured by hand.
 
-| Host   | Role           | Purpose                | NixOS     |
-|--------|----------------|------------------------|-----------|
-| d-mk4  | desktop        | gaming + development   | installed |
-| l-mk1  | laptop         | development            | pending   |
-| s-mk1  | file server    | fileserver + docker    | pending   |
-| s2-mk1 | network server | networking             | pending   |
+| Host   | Role           | Purpose              | Channel  | Status    |
+|--------|----------------|----------------------|----------|-----------|
+| d-mk4  | desktop        | gaming + development | unstable | installed |
+| l-mk1  | laptop         | development          | unstable | pending   |
+| s-mk1  | file server    | Samba file sharing   | stable   | pending   |
+| s2-mk1 | network server | networking           | stable   | pending   |
 
-Only d-mk4 is on this config, so the commands under Rebuilding apply to it until the others are installed. A host can have an entry here before the machine is on NixOS.
+Only d-mk4 runs this config today. The other hosts have entries so the flake can be evaluated before their installs.
+
+## Design Decisions
+
+- **One flake, one output per host.** Every machine is built through the same `mkHost`, so its hostname and shared arguments cannot drift.
+- **Stable and unstable side by side.** Servers follow NixOS 26.05; the desktop and laptop follow unstable, and the desktop-facing inputs follow unstable with them.
+- **Modules describe topics, hosts select them.** A host never configures a shared module, and a module never checks which host is asking.
+- **Appearance is decided once.** Flavor and accent live in `modules/theme/catppuccin.nix`; Plasma, the editors and the cursor derive from them.
+- **Updates are reported, never applied.** A login check compares the locked config with upstream and copies a command; it never writes `flake.lock` on its own.
+- **Models start on demand.** Socket activation keeps the GPU idle until a client connects, and llama-swap releases it after five idle minutes.
 
 ## Layout
 
-- `flake.nix` — flake inputs, the username, one output per host.
-- `hosts/<name>/` — what is specific to one machine.
-- `modules/` — shared settings grouped by topic, not by program. A topic's NixOS and Home Manager options live in the same file.
-  - `modules/servers/` — what the headless machines share (`base.nix`, ssh) plus one file per role, so a host picks the service it runs.
-  - `modules/dev/` — toolchains, with anything large enough to manage its own plugins in a file of its own.
-- `modules/theme/` — appearance. One file per backend.
-
-## Rules
-
-- Every setting is defined in exactly one place.
-- A host selects modules; it does not configure them.
-- A module is host-agnostic. Adding it to a second host means importing it, never editing it, even if one host is its only user today.
-- The account is set up apart from the programs it uses.
-- Appearance is decided centrally. Topics never hardcode a theme, colour or icon.
-
-## Commits
-
-`<scope>: <imperative verb> <object>`, one line, no body.
-
-- Scope is who the change is for, not how many files it touches.
-- A change that only one machine needs gets that host's name.
-- A change to one shared topic gets the topic's name.
-- A change spanning several topics — a rename, a new host, a sweep of dead code — gets `repo`.
-- Lowercase, and no trailing period.
-- Capitals only for proper nouns and code, as in `README`, `GRUB`, `programs.vscodium`.
-- Name the change itself, not the act of changing.
-- Bundle related edits into one commit, joined with commas.
-
-## Example
-
-- Changing the look means editing `flavor` and `accent` in `modules/theme/catppuccin.nix`.
-  - Plasma, editors, terminals and cursors follow, because none of them name a colour.
-  - No host file changes, because no host file ever held the choice.
-- A second theme system means a new file in `modules/theme/`, imported by the hosts that want it, and nothing else changes.
-- The same holds outside appearance.
-  - A setting every host wants belongs in `modules/`, not in each host.
-  - A setting one host wants belongs in `hosts/<name>/`, not in a module that would then need a condition to avoid changing the others.
-- What does not work is the reverse: reaching into `modules/` from a host to override a topic, or adding an `if host == ...` guard to a shared module.
-  - Both put a decision in two places, and the second place is the one nobody reads.
-
-## Known limitations
-
-### VSCodium extensions
-
-- Extensions come from nixpkgs, at nixpkgs' version rather than the marketplace's, and only if nixpkgs packages them.
-- Home Manager installs the list as written, so an extension pack installs the pack alone; the Java extensions are listed one by one for that reason.
-
-### Lock screen
-
-- SDDM draws the login screen and kscreenlocker draws the lock screen: separate programs, separate settings ([SDDM's maintainer on this](https://github.com/sddm/sddm/issues/721)).
-  - Nothing binds them together.
-  - nixpkgs has no option over either one, so there is nowhere to put a shared decision.
-- Up to Plasma 6.0 a theme could supply one via `contents/lockscreen/LockScreen.qml` in its global theme ([porting guide](https://develop.kde.org/docs/plasma/theme/theme-porting-to-plasma6)).
-  - Both surfaces then came from the same file, so one theme file covered both.
-- Since Plasma 6.1 it comes from the Plasma shell package instead ([source](https://invent.kde.org/plasma/kscreenlocker/-/blob/master/settings/shell_integration.cpp)).
-  - The global theme lost that hook, so a theme can no longer supply a lock screen.
-  - Breeze, the theme Plasma itself ships, does not provide one either.
-- No theme fills the gap.
-  - `catppuccin-kde` has only a splash screen.
-  - Neither nixpkgs nor the `catppuccin` flake packages a lock screen.
-
-Recheck when any of these change:
-
-- Plasma restores a lock screen component for global themes, or documents an equivalent for shell packages.
-- `catppuccin-kde` or the `catppuccin` flake ships a lock screen.
-
-## Updates
-
-- On login, the desktop reports which packages in this config have newer versions upstream.
-  - The pop-up carries a button that copies the command to update them, so the desktop itself never rebuilds anything.
-  - That command names the config directory instead of `.`, so it can be pasted in any directory.
-- It compares two evaluations of the config, never a build.
-  - It never writes `flake.lock`, so a report can never turn into a change.
-- Packages are read off the config rather than looked up by name.
-  - nixpkgs dropped the top-level KDE Gear aliases, so name lookup would silently miss most of the desktop.
-- Nix cannot update one package, so the button updates everything or nothing.
-- Bumps sharing a from and a to fold into one line, and the pop-up speaks only when that set changes.
-- State lives in `~/.local/state/nixos-config/`.
-  - Deleting it costs nothing but the next login's check.
-
-To see the report again:
-
 ```
-rm ~/.local/state/nixos-config/seen
+flake.nix          inputs, channels, one output per host
+hosts/<host>/      machine-specific boot, hardware, network and storage
+modules/           shared settings, one file per topic
+  dev/             editors and toolchains
+  plasma/          panel layout
+  servers/         headless base plus one file per role
+  sync/            Syncthing folders and ignore rules
+  theme/           appearance backend
+docs/              why things are the way they are
 ```
 
-## Local models
+## Rebuild
 
-- `hosts/d-mk4/llm.nix` serves language models on d-mk4. Nothing runs until a client connects.
-  - `llm.socket` accepts the connection on `127.0.0.1:8080`.
-  - `llm.service` is `systemd-socket-proxyd`, forwarding to llama-swap on port 8081.
-  - `llama-swap.service` reads the model out of the request, starts `llama-server` for it, and swaps models as they are asked for.
-- Shutdown happens in two stages, because a model held in VRAM holds the GPU.
-  - llama-swap unloads a model after 300 seconds without requests.
-  - The proxy exits after 10 minutes without traffic, and systemd stops llama-swap with it.
-- Models live on `/mnt/extra/models` and are listed in `models`.
-  - Each gets a context of 120000 unless it names its own.
-  - Adding one to that list is all it takes: opencode reads the same attribute set, so it shows up there too.
-  - Nothing fetches them. The `.gguf` files have to be on that disk already.
-- The port is loopback-only. Tunnel to it from the tailnet (`sshd` on d-mk4 is firewalled to `tailscale0`, and starts at boot without a login):
-
-  ```
-  ssh -L 8080:127.0.0.1:8080 miningpinguin@d-mk4-1
-  ```
-- It needs `hardware.graphics`, which this config never sets on purpose.
-  - nixpkgs turns it on for any host with an X server or a display manager, which `services.xserver.enable` counts as. Two things need it and would fail without a word of complaint: Wine loses its 32-bit drivers, and llama-swap's Vulkan drivers stop loading on d-mk4.
-  - If either breaks, read `nixos/modules/services/misc/graphical-desktop.nix` in nixpkgs first, then set `hardware.graphics.enable = true` in `modules/desktop.nix`.
-
-## Syncthing
-
-- Folders inside `~/Projects` are shared individually.
-- It is the Home Manager module, because `services.syncthing` runs as its own account and cannot read this user's home.
-- Everything is declared in `modules/sync/sync.nix`, so anything added in the GUI is gone at the next activation.
-  - Folders must stay in sync with what s-mk1 and l-mk1 declare through their own Syncthing: Syncthing requires the folder and its id to match on every device sharing it.
-  - `miningpinguin-projects` (`~/Projects` as one folder) was deliberately retired in favour of the per-folder shares.
-  - Ignore rules live in `modules/sync/sync.nix` (`ignorePatterns`) because `.stignore` is per-device and never syncs over.
-- The GUI listens on loopback only, so reach it over SSH:
-
-  ```
-  ssh -L 3000:127.0.0.1:8384 miningpinguin@s-mk1
-  ```
-
-- Replaced files are kept, 6 versions deep / 30 days on `obsidian`.
-- Temp files and editor droppings are excluded rather than synced (`ignorePatterns` per folder).
-  - The `obsidian` folder mirrors the rules s-mk1 declared in its own `.stignore`.
-
-## Wake-on-LAN
-
-`d-mk4` keeps its `eno1` NIC armed on every boot, so a powered-off machine can be started from anywhere on the LAN. The local models are ready once it boots; nothing waits for a login.
-
-```
-nix shell nixpkgs#wakeonlan -c wakeonlan c8:7f:54:50:f4:f8
+```bash
+sudo nixos-rebuild switch --flake .#d-mk4
 ```
 
-The board needs `Power On By PCI-E` enabled and `ErP Ready` disabled (APM settings); `ErP` cuts the standby power the NIC listens on. After a power cut the NIC is disarmed until the machine boots once, so that first start is still manual. Check the arm state with `sudo ethtool eno1 | grep Wake-on`, which should say `g`.
-
-## Rebuilding
-
-```
-sudo nixos-rebuild switch --flake .#$host
+```bash
+nix flake update && sudo nixos-rebuild switch --flake .#d-mk4
 ```
 
-```
-nix flake update && sudo nixos-rebuild switch --flake .#$host
-```
+Use `boot` instead of `switch` when a change should land at the next reboot. New files must be staged with `git add` before a flake build can see them.
 
-Use `boot` when a change should land at the next reboot rather than now. It builds the configuration and makes it the boot default, but does not activate it, so the running system stays as it is. `switch` does both, and is the right choice for everything else here.
-Hostname comes from the host's name, set centrally in `flake.nix`, so it is never a host-file edit.
-New files must be staged with `git add` before a flake build can see them.
+## Documentation
+
+The README is the overview. The pages under `docs/` hold the reasoning and the operational detail.
+
+| Page | What it answers |
+|---|---|
+| [Architecture](docs/architecture.md) | How the flake, hosts, channels and modules fit together |
+| [Operations](docs/operations.md) | Rebuilding, updating inputs and the login update report |
+| [Desktop](docs/desktop.md) | Plasma, panels, Catppuccin and the lock-screen limitation |
+| [Development](docs/development.md) | Toolchains, VSCodium, JetBrains IDEs and Android |
+| [Local models](docs/local-models.md) | Socket activation, on-demand loading and the GPU caveat |
+| [Syncthing](docs/syncthing.md) | Why shares and ignore rules are declared in Nix |
+| [Network](docs/network.md) | Wake-on-LAN and SSH over the tailnet |
+| [Commits](docs/commits.md) | Commit message convention |
