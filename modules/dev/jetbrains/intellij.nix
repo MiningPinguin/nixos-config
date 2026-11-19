@@ -3,35 +3,23 @@
 # a flake because nixpkgs' addPlugins takes only derivations.
 { inputs, pkgs, user, ... }:
 let
-  common = import ./common.nix { inherit pkgs; };
-
-  # com.jetbrains.kmm is fetched directly: nix-jetbrains-plugins selects the
-  # Android Studio variant for IntelliJ IDEA, which declares the same
-  # com.intellij.modules.nativeDebug module as the Native Debugging Support
-  # plugin and depends on com.intellij.modules.androidstudio (absent in IDEA).
-  kmmPlugin = pkgs.fetchzip {
-    name = "com.jetbrains.kmm-262.10968.207-IJ";
-    url = "https://downloads.marketplace.jetbrains.com/files/14936/1188704/kmm-plugin-262.10968.207-IJ.zip";
-    sha256 = "10p6ninpbg4psbxb6j8m66rb2v7yc28wk5nfzxa2h38hdqvvwlif";
-    stripRoot = true;
-  };
+  common = import ./common.nix { inherit pkgs inputs; };
 
   pluginIds = common.basePluginIds ++ [
     "com.intellij.spring.debugger"
     "com.intellij.swagger"
     "org.jetbrains.android"
-    "com.android.tools.design"
     "androidx.compose.plugins.idea"
     "org.jetbrains.kotlin-toolchain"
   ];
   plugins = builtins.attrValues (inputs.nix-jetbrains-plugins.lib.pluginsForIde
-    pkgs pkgs.jetbrains.idea pluginIds) ++ [ kmmPlugin ];
+    pkgs pkgs.jetbrains.idea pluginIds);
 
-  idea = pkgs.jetbrains.plugins.addPlugins pkgs.jetbrains.idea plugins;
+  pluginDir = pkgs.linkFarmFromDrvs "intellij-plugins" plugins;
 
   ideaWrapper = pkgs.writeShellScriptBin "intellij-idea" ''
     export IDEA_PROPERTIES=/home/${user}/.config/intellij/idea.properties
-    exec ${pkgs.lib.getExe idea} "$@"
+    exec ${pkgs.lib.getExe pkgs.jetbrains.idea} "$@"
   '';
 in
 {
@@ -41,8 +29,13 @@ in
     xdg.desktopEntries.intellij-idea = {
       name = "IntelliJ IDEA";
       exec = "intellij-idea";
-      icon = "${idea}/intellij-idea/bin/idea.png";
+      icon = "${pkgs.jetbrains.idea}/intellij-idea/bin/idea.png";
       categories = [ "Development" "IDE" ];
+    };
+
+    home.file.".config/intellij/config/plugins" = {
+      source = pluginDir;
+      recursive = true;
     };
 
     xdg.configFile."intellij/idea.properties".text = ''
@@ -51,8 +44,5 @@ in
       idea.plugins.path=/home/${user}/.config/intellij/config/plugins
       idea.log.path=/home/${user}/.config/intellij/system/log
     '';
-
-    xdg.configFile."intellij/config/options/ide.general.xml".text =
-      common.ideGeneralXml;
   };
 }

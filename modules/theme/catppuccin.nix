@@ -9,7 +9,8 @@
 # installs catppuccin-<flavor>-<accent>-cursors, which Plasma matches exactly.
 # NixOS/nixpkgs#543097 bumps past that but has sat unbuilt since 2026-07-18, so
 # drop home.file and cursorSource once it lands.
-{ inputs, lib, pkgs, user, ... }:let
+{ inputs, lib, pkgs, user, ... }:
+let
   # Change the look here (flavors: latte, frappe, macchiato, mocha)
   flavor = "mocha";
   accent = "mauve";
@@ -43,8 +44,6 @@ in
 
   home-manager.sharedModules = [ inputs.catppuccin.homeModules.catppuccin ];
   home-manager.users.${user} = {
-    # Required by Home Manager since it stopped inferring this.
-    # Extract to a shared module if another backend needs it.
     home.pointerCursor.enable = true;
 
     catppuccin = {
@@ -62,39 +61,6 @@ in
       ".local/share/icons/${globalTheme lightFlavor}-Cursors".source = cursorSource lightFlavor;
     };
 
-    # JetBrains IDEs read their color scheme from a seed file, so the look
-    # follows the central flavor here instead of being named in modules/dev.
-    xdg.configFile."intellij/config/options/colors.scheme.xml".text = ''
-      <application>
-        <component name="EditorColorsManagerImpl">
-          <global_color_scheme name="Catppuccin ${capFlavor}" />
-        </component>
-      </application>
-    '';
-
-    xdg.configFile."intellij/config/options/laf.xml".text = ''
-      <application>
-        <component name="LafManager">
-          <laf themeId="com.github.catppuccin.${flavor}.islands.jetbrains" />
-        </component>
-      </application>
-    '';
-
-    xdg.configFile."android-studio/config/options/colors.scheme.xml".text = ''
-      <application>
-        <component name="EditorColorsManagerImpl">
-          <global_color_scheme name="Catppuccin ${capFlavor}" />
-        </component>
-      </application>
-    '';
-
-    xdg.configFile."android-studio/config/options/laf.xml".text = ''
-      <application>
-        <component name="LafManager">
-          <laf themeId="com.github.catppuccin.${flavor}.islands.jetbrains" />
-        </component>
-      </application>
-    '';
     programs.plasma.workspace = {
       lookAndFeel = globalTheme flavor;
       colorScheme = "Catppuccin${capFlavor}${capAccent}";
@@ -107,7 +73,6 @@ in
         DefaultDarkLookAndFeel = globalTheme flavor;
         DefaultLightLookAndFeel = globalTheme lightFlavor;
       };
-      # Breeze's global themes revert this key, so re-assert it every time.
       Icons.Theme = iconTheme;
     };
   };
