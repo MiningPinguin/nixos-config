@@ -1,6 +1,6 @@
 # Development workstation bits: containers, databases, toolchains.
 # Used by d-mk4 and l-mk1.
-{ lib, pkgs, user, ... }:
+{ lib, pkgs, user, inputs, ... }:
 {
   imports = [
     ./jetbrains/intellij.nix
@@ -59,6 +59,8 @@
     "/home/${user}/Android/Sdk/platform-tools"
     "/home/${user}/Android/Sdk/emulator"
   ];
+
+  nix.registry.nixpkgs.flake = inputs.nixpkgs-unstable;
 
   # Prebuilt binaries that expect a normal FHS layout
   programs.nix-ld.enable = true;
