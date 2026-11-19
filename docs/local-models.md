@@ -26,7 +26,7 @@ Models live on the data disk and are listed in one attribute. OpenCode reads the
 The service is loopback-only. Tunnel to it from the tailnet:
 
 ```bash
-ssh -L 8080:127.0.0.1:8080 miningpinguin@d-mk4-1
+ssh -L 8080:127.0.0.1:8080 miningpinguin@d-mk4
 ```
 
 See [Network](network.md#tailnet-ssh).
