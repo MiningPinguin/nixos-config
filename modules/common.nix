@@ -1,4 +1,15 @@
+{ config, inputs, pkgs, ... }:
+
+let
+  pkgs-stable = import inputs.nixpkgs {
+    inherit (pkgs.stdenv.hostPlatform) system;
+    inherit (config.nixpkgs) config;
+  };
+in
 {
+  _module.args = { inherit pkgs-stable; };
+  home-manager.extraSpecialArgs = { inherit pkgs-stable; };
+
   networking.networkmanager.enable = true;
 
   time.timeZone = "Europe/Brussels";

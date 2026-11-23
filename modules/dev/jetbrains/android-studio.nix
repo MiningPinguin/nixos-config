@@ -1,8 +1,6 @@
 # Android Studio. Plugins come from the flake, SDK stays mutable in ~/Android/Sdk.
 { inputs, pkgs, user, ... }:
 let
-  common = import ./common.nix { inherit pkgs inputs; };
-
   # Android Studio ships its own native-debug module inside the KMP plugin,
   # so the separate Native Debugging Support plugin conflicts with it.
   # Prettier needs the JS analysis plugin, which AS does not ship.
